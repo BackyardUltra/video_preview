@@ -759,20 +759,20 @@ body.light .rnd-name{color:#111 !important}
   text-align:center;
   background:rgba(0,0,0,.35);
   border:1px solid rgba(255,255,255,.06);
-  padding:10px 6px;border-radius:4px;
+  padding:12px 8px;border-radius:4px;
 }
 .card-stat-val{
-  display:block;font-size:22px;font-weight:800;
+  display:block;font-size:26px;font-weight:800;
   color:#fff;line-height:1;
 }
 .card-stat-val.gold{color:#f0b429}
 .card-stat-val.silver{color:#a8b3c0}
 .card-stat-val.bronze{color:#c07b3b}
 .card-stat-lbl{
-  display:block;font-size:11px;
-  line-height:1.15;
-  color:rgba(255,255,255,.5);
-  text-transform:uppercase;letter-spacing:.15px;margin-top:4px;
+  display:block;font-size:13px;
+  line-height:1.18;
+  color:rgba(255,255,255,.56);
+  text-transform:uppercase;letter-spacing:.1px;margin-top:5px;
 }
 
 /* Bottom: miejscowość + sezon */
@@ -1929,8 +1929,8 @@ function renderCardToCanvas(p, canvas, outputScale=1, onDone=null){
     const gap = 8;
     const sX0 = 16;
     const sW = (W - 32 - gap * (cols - 1)) / cols;
-    const sH = rows === 1 ? 110 : 98;
-    const sY0 = rows === 1 ? 704 : 646;
+    const sH = rows === 1 ? 122 : 112;
+    const sY0 = rows === 1 ? 716 : 652;
     stats.forEach(({value,label},i)=>{
       const col=i%cols, row=Math.floor(i/cols);
       const x=sX0+col*(sW+gap), y=sY0+row*(sH+gap);
@@ -1938,14 +1938,14 @@ function renderCardToCanvas(p, canvas, outputScale=1, onDone=null){
       roundRect(ctx,x+2,y+2,sW-4,sH-6,5); ctx.fill();
       ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=1;
       roundRect(ctx,x+2,y+2,sW-4,sH-6,5); ctx.stroke();
-      const valFont = cols <= 3 ? 26 : 24;
+      const valFont = cols <= 3 ? 32 : 28;
       ctx.font=`bold ${valFont}px "Barlow Condensed",sans-serif`;
       ctx.fillStyle=tier==='other'?'#fff':tColor;
       ctx.textAlign='center';
-      ctx.fillText(value, x+sW/2, y+38);
-      ctx.font='600 13px "Barlow Condensed",sans-serif';
+      ctx.fillText(value, x+sW/2, y+44);
+      ctx.font='600 15px "Barlow Condensed",sans-serif';
       ctx.fillStyle='rgba(255,255,255,.52)';
-      wrapCardLabel(ctx, label, x+sW/2, y+57, sW-16, 14);
+      wrapCardLabel(ctx, label, x+sW/2, y+66, sW-18, 16);
     });
 
     const sepY = sY0 + rows*sH + (rows-1)*gap + 18;

@@ -1067,7 +1067,7 @@ function process(raw, rds) {
     const best     = rawLoops.length ? Math.max(...rawLoops) : 0;
     const avg      = starts ? Math.round((suma/starts)*10)/10 : 0;
     const totalKm  = Math.round(rawLoops.reduce((a,b)=>a+b,0) * 6.706 * 10) / 10;
-    return {...r, id:idx, pts, suma, starts, best, avg, km:totalKm, city:r.city??null, pb:r.pb??null, wins:(r.wins!=null?r.wins:null), assists:(r.assists!=null?r.assists:null), allStarts:(r.allStarts!=null?r.allStarts:null)};
+    return {...r, id:idx, pts, suma, starts, best, avg, km:totalKm, city:null, pb:r.pb??null, wins:(r.wins!=null?r.wins:null), assists:(r.assists!=null?r.assists:null), allStarts:(r.allStarts!=null?r.allStarts:null)};
   });
 }
 
@@ -1535,12 +1535,11 @@ function parseCSV(csv){
       const v=parseFloat(raw);
       yardy.push(isNaN(v)||raw===''?null:v);
     }
-    const city    = (c[21]||'').trim()  || null;
     const pb      = parseFloat((c[22]||'').replace(',','.')) || null;
     const wins    = parseInt(c[23]||'')  || null;
     const assists = parseInt(c[24]||'')  || null;
     const allStarts = parseInt(c[25]||'') || null;
-    newRaw.push({i:imie,n:naz,p:plec,nat,y:yardy,city,pb,wins,assists,allStarts});
+    newRaw.push({i:imie,n:naz,p:plec,nat,y:yardy,city:null,pb,wins,assists,allStarts});
   }
 
   rounds=newRounds;
@@ -1570,7 +1569,7 @@ async function fetchSheet() {
   } catch(e) {
     // fallback do danych wbudowanych
     rounds  = LIVE_ROUNDS;
-    players = process(LIVE_PLAYERS_RAW.map(p=>({...p,city:p.city||null,pb:p.pb||null,wins:p.wins??null,assists:p.assists??null,allStarts:p.allStarts??null})), rounds);
+    players = process(LIVE_PLAYERS_RAW.map(p=>({...p,city:null,pb:p.pb||null,wins:p.wins??null,assists:p.assists??null,allStarts:p.allStarts??null})), rounds);
     renderHead(); render();
     
     console.warn('Sheet fetch failed:', e);
@@ -1786,7 +1785,7 @@ function openCardModal(){
   cardStatsEl.innerHTML = stats.map(({value,label})=>
     `<div class="card-stat"><span class="card-stat-val ${vc}">${value}</span><span class="card-stat-lbl">${String(label).replace(/\n/g,'<br>')}</span></div>`
   ).join('');
-  document.getElementById('cardCity').textContent = p.city||'';
+  document.getElementById('cardCity').textContent = '';
   document.getElementById('cardModal').classList.add('open');
   document.body.style.overflow='hidden';
   fitPlayerCard();
@@ -1963,7 +1962,7 @@ function renderCardToCanvas(p, canvas, outputScale=1, onDone=null){
     ctx.font='500 18px "Barlow Condensed",sans-serif';
     ctx.fillStyle='rgba(255,255,255,.45)';
     ctx.textAlign='left';
-    ctx.fillText((p.city||'').toUpperCase(), 24, footY);
+    ctx.fillText('', 24, footY);
     ctx.textAlign='right';
     ctx.fillStyle='rgba(255,255,255,.3)';
     ctx.fillText('PBUL · 2026', W-24, footY);
